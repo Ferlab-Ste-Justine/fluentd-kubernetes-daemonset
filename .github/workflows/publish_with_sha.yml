@@ -1,0 +1,22 @@
+name: Publish Image Using Sha and Timestamp
+
+on:
+  push:
+    branches:
+      - ferlab-images
+
+jobs:
+  push:
+    name: Publish Image using commit sha and timestamp
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Push the image on the registry
+        uses: Ferlab-Ste-Justine/action-push-image@v2
+        with:
+          username: ${{ secrets.FERLAB_DOCKER_HUB_USER }}
+          password: ${{ secrets.FERLAB_DOCKER_HUB_TOKEN }}
+          image: ferlabcrsj/fluentd-kubernetes-daemonset
+          tag_format: "{sha}-{timestamp}"
+          location: v1.15/debian-opensearch
+          dockerfile: v1.15/debian-opensearch/Dockerfile
